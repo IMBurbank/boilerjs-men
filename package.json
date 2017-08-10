@@ -1,0 +1,41 @@
+{
+  "name": "template-stack-men-default",
+  "version": "1.0.0",
+  "description": "basic mongo-express-node template",
+  "main": "server.js",
+  "scripts": {
+    "db": "mongod --port 27017 --dbpath=./data",
+    "start": "SET NODE_ENV=development&& node server.js",
+    "startprod": "SET NODE_ENV=production&& node server.js",
+    "test": "SET NODE_ENV=test&& mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IMBurbank/template-stack-men-default.git"
+  },
+  "keywords": [
+    "mangodb",
+    "express",
+    "node",
+    "template"
+  ],
+  "author": "IMBurbank",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IMBurbank/template-stack-men-default/issues"
+  },
+  "homepage": "https://github.com/IMBurbank/template-stack-men-default#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "mongoose": "^4.11.6",
+    "passport": "^0.3.2",
+    "passport-github": "^1.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "chai:": "^4.1.1",
+    "chai-as-promised": "^7.1.1"
+  }
+}
