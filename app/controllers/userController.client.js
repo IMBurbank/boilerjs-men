@@ -16,11 +16,11 @@
   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function(data) {
     var json = JSON.parse(data);
 
-    updateHtmlElement(json, displayName, 'displayName');
+    updateHtmlElement(json.userInfo, displayName, 'displayName');
 
-    if (profileId !== null) updateHtmlElement(json, profileId, 'displayName');
-    if (profileUsername !== null) updateHtmlElement(json, profileUsername, 'username');
-    if (profileRepos !== null) updateHtmlElement(json, profileRepos, 'publicRepos');
+    if (profileId !== null) updateHtmlElement(json.userInfo, profileId, 'id');
+    if (profileUsername !== null) updateHtmlElement(json.userInfo, profileUsername, 'username');
+    if (profileRepos !== null) updateHtmlElement(json.userInfo, profileRepos, 'publicRepos');
   }));
 
 })();

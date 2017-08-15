@@ -1,8 +1,8 @@
 'use strict';
 
-const path = process.cwd();
+const dir = process.cwd();
 
-const ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+const ClickHandler = require(dir + '/app/controllers/clickHandler.server.js');
 
 module.exports = function(app, passport) {
   let clickHandler = new ClickHandler();
@@ -16,12 +16,12 @@ module.exports = function(app, passport) {
 
   app.route('/')
     .get(isLoggedIn, (req, res) => {
-      res.sendFile(path + '/public/index.html');
+      res.sendFile(dir + '/public/index.html');
     });
 
   app.route('/login')
     .get( (req, res) => {
-      res.sendFile(path + '/public/login.html');
+      res.sendFile(dir + '/public/login.html');
     });
 
   app.route('/logout')
@@ -32,12 +32,12 @@ module.exports = function(app, passport) {
 
   app.route('/profile')
     .get(isLoggedIn, (req, res) => {
-      res.sendFile(path + '/public/profile.html');
+      res.sendFile(dir + '/public/profile.html');
     });
 
   app.route('/api/:id')
     .get(isLoggedIn, (req, res) => {
-      res.json(req.user.github);
+      res.json(req.user);
     });
 
   app.route('/auth/github')
@@ -48,6 +48,14 @@ module.exports = function(app, passport) {
       successRedirect: '/',
       failureRedirect: '/login'
     }));
+
+  app.route('/auth/google')
+    .get(passport.authenticate('google', { scope: ['profile'] }));
+
+  app.route('/auth/google/callback')
+    .get(passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+      res.redirect('/');
+    });
 
   app.route('/api/:id/clicks')
     .get(isLoggedIn, clickHandler.getClicks)

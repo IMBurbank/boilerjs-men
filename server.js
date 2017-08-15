@@ -14,17 +14,17 @@ require('./app/config/passport')(passport);
 
 const app = express(),
       appPort = process.env.APP_PORT || 3000,
-      nodeEnv = process.env.NODE_ENV,
-      path = process.cwd();
+      dir = process.cwd(),
+      nodeEnv = process.env.NODE_ENV;
 
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, { useMongoClient: true });
 
 
-app.use('/common', express.static(path + '/app/common'))
-app.use('/controllers', express.static(path + '/app/controllers'));
-app.use('/public', express.static(path + '/public'));
+app.use('/common', express.static(dir + '/app/common'))
+app.use('/controllers', express.static(dir + '/app/controllers'));
+app.use('/public', express.static(dir + '/public'));
 
 app.use(session({
   secret: 'boilerSecret',

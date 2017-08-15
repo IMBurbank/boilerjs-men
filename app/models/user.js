@@ -11,6 +11,15 @@ const User = new Schema({
   	username: String,
     publicRepos: Number
   },
+  google: { //placeholder
+  	id: String,
+  	displayName: String
+  },
+  userInfo: {
+    id: String,
+  	displayName: String,
+    loginAuth: String
+  },
   nbrClicks: {
     clicks: Number
   }

@@ -1,7 +1,8 @@
 {
-  "name": "template-stack-men-default",
+  "name": "boilerjs-men",
   "version": "1.0.0",
-  "description": "basic mongo-express-node template",
+  "description": "basic mongoose-express-node template",
+  "debug": "true",
   "main": "server.js",
   "scripts": {
     "db": "mongod --port 27017 --dbpath=./data",
@@ -11,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IMBurbank/template-stack-men-default.git"
+    "url": "git+https://github.com/IMBurbank/boilerjs-men.git"
   },
   "keywords": [
     "mangodb",
@@ -22,16 +23,17 @@
   "author": "IMBurbank",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/IMBurbank/template-stack-men-default/issues"
+    "url": "https://github.com/IMBurbank/boilerjs-men/issues"
   },
-  "homepage": "https://github.com/IMBurbank/template-stack-men-default#readme",
+  "homepage": "https://github.com/IMBurbank/boilerjs-men",
   "dependencies": {
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "mongoose": "^4.11.6",
     "passport": "^0.3.2",
-    "passport-github": "^1.1.0"
+    "passport-github": "^1.1.0",
+    "passport-google-oauth20": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^3.5.0",
