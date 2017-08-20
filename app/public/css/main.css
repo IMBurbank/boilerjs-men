@@ -71,7 +71,7 @@ header a ~ p {
 	margin: 16px auto;
 	padding: 8px 16px;
 	max-width: 320px;
-	background: rgb(150, 216, 235);
+	background: #96D8EB;
 	border-radius: 3px;
 }
 
@@ -197,7 +197,7 @@ img {
 	height: 200px;
   margin: 32px auto;
   padding: 16px;
-	background-color: #EEE;
+	background-color: #96D8EB;
 	border-radius: 3px;
 	text-align: center;
 	color: #000;
