@@ -17,7 +17,7 @@ require('./app/config/passport')(passport);
 
 
 const app = express(),
-      appPort = process.env.APP_PORT || 3000,
+      appPort = process.env.PORT,
       dir = process.cwd(),
       nodeEnv = process.env.NODE_ENV;
 
