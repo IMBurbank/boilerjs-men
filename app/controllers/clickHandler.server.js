@@ -7,7 +7,9 @@ const Users = require('../models/user.js');
 function ClickHandler () {
 
   this.addClick = (req, res) => {
-    Users.findOneAndUpdate({ 'userInfo.id': req.user.userInfo.id }, { $inc: { 'nbrClicks.clicks': 1 } })
+    Users.findOneAndUpdate(
+      { [`${req.user.loginAuth}.id`]: req.user[req.user.loginAuth].id }, 
+      { $inc: { 'nbrClicks.clicks': 1 } } )
       .exec( (err, result) => {
         if (err) throw err;
 
@@ -16,7 +18,9 @@ function ClickHandler () {
   };
 
   this.getClicks = (req, res) => {
-    Users.findOne({ 'userInfo.id': req.user.userInfo.id }, { '_id': false })
+    Users.findOne(
+      { [`${req.user.loginAuth}.id`]: req.user[req.user.loginAuth].id }, 
+      { '_id': false } )
       .exec( (err, result) => {
         if (err) throw err;
 
@@ -25,7 +29,9 @@ function ClickHandler () {
   };
 
   this.resetClicks = (req, res) => {
-    Users.findOneAndUpdate({ 'userInfo.id': req.user.userInfo.id }, { 'nbrClicks.clicks': 0 })
+    Users.findOneAndUpdate(
+      { [`${req.user.loginAuth}.id`]: req.user[req.user.loginAuth].id }, 
+      { 'nbrClicks.clicks': 0 } )
       .exec( (err, result) => {
         if (err) throw err;
 
@@ -34,5 +40,6 @@ function ClickHandler () {
   };
 
 };
+
 
 module.exports = ClickHandler;

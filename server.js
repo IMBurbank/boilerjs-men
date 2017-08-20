@@ -1,8 +1,12 @@
 'use strict';
 
 
-const express = require('express'),
+const bodyParser = require('body-parser'),
+      cookieParser = require('cookie-parser'),
+      express = require('express'),
+      flash = require('connect-flash'),
       mongoose = require('mongoose'),
+      morgan = require('morgan'),
       passport = require('passport'),
       routes = require('./app/routes/index.js'),
       session = require('express-session');
@@ -22,9 +26,16 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI, { useMongoClient: true });
 
 
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.set('view engine', 'pug');
+app.set('views', dir + '/app/views');
+
 app.use('/common', express.static(dir + '/app/common'))
 app.use('/controllers', express.static(dir + '/app/controllers'));
-app.use('/public', express.static(dir + '/public'));
+app.use('/public', express.static(dir + '/app/public'));
 
 app.use(session({
   secret: 'boilerSecret',
@@ -35,31 +46,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(flash());
+
+
 routes(app, passport);
 
 app.listen(appPort, () => {
   console.log(`Express App listening on port ${appPort}...`);
 });
-
-
-/*
-const startServer = async function _startServer() {
-  try {
-    const db = await MongoClient.connect('mongodb://localhost:27017/' + dbName);
-
-    app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
-    app.use('/public', express.static(process.cwd() + '/public'));
-
-    routes(app, db, collectionName);
-
-    const listener = await app.listen(appPort);
-    console.log('MongoDB connectedto port, db: ', db.serverConfig.s.port, db.databaseName);
-    console.log('Express listening on port ', listener.address().port);
-  }
-  catch(err) { throw err }
-};
-
-if (nodeEnv !== 'test') startServer();
-
-module.exports = { app, collectionName, MongoClient, routes };
-*/

@@ -1,10 +1,14 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const bcrypt = require('bcrypt'),
+      mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+const saltRounds = 12,
+      Schema = mongoose.Schema;
+      
 
 const User = new Schema({
+  loginAuth: String,
   github: {
   	id: String,
   	displayName: String,
@@ -15,14 +19,26 @@ const User = new Schema({
   	id: String,
   	displayName: String
   },
-  userInfo: {
+  local: {
     id: String,
-  	displayName: String,
-    loginAuth: String
+    displayName: String,
+    displayNameLower: String,
+    email: String,
+    password: String
   },
   nbrClicks: {
     clicks: Number
   }
 });
+
+
+User.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, saltRounds);
+}
+
+User.methods.validPassword = function(password) { 
+  return bcrypt.compareSync(password, this.local.password);
+}
+
 
 module.exports = mongoose.model('User', User);

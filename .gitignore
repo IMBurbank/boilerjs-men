@@ -51,4 +51,8 @@ node_modules/
 
 # Dev Database Directories #
 ############################
-data
+devData
+
+# Editor Files/Folders #
+########################
+.vscode

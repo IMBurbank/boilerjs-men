@@ -8,25 +8,7 @@ var ajaxFunctions = {
 
     document.addEventListener('DOMContentLoaded', fn, false);
 
-  },/*
-  ajaxRequest: function ajaxRequest(method, url, callback) {
-
-    fetch(url, { method: method })
-      .then(function(res) {
-        if (res.status !== 200) {
-          console.log("ajaxRequest problem... status: ", res.status, res.statusText);
-        }
-        return res.text();
-      })
-      .then(function(data) {
-        callback(data);
-      })
-      .catch(function(err) {
-        throw err;
-      });
-
-  }
-  */
+  },
   ajaxRequest: function ajaxRequest (method, url, callback) {
     var xmlhttp = new XMLHttpRequest();
 

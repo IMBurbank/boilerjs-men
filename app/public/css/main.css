@@ -59,11 +59,55 @@ header a ~ p {
 	font-weight: 400;
 }
 
-/****** Login Styling ******/
+/****** Auth Styling ******/
 
-.login {
-	margin: 86px auto 0 auto;
-	text-align: center;
+.auth-error {
+	margin: 16px auto 0;
+	height: 2em;
+	color: red;
+}
+
+.auth-form {
+	margin: 16px auto;
+	padding: 8px 16px;
+	max-width: 320px;
+	background: rgb(150, 216, 235);
+	border-radius: 3px;
+}
+
+.auth-form p {
+  margin: 8px 0 16px;
+  text-align: center;
+}
+
+.auth-form .input-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.auth-form span {
+  font-size: .9rem;
+  font-weight: 300;
+}
+
+.auth-form input {
+  width: 200px;
+}
+
+.auth-form button {
+  margin: 8px 0;
+  padding: 6px 16px;
+  color: #FFF;
+  font-size: .9rem;
+  font-weight: bold;
+  background: #FFA000;
+  border: none;
+  border-radius: 3px;
+}
+
+.auth-form button:hover {
+  background: #FFCE15;
 }
 
 #login-btn {
@@ -73,7 +117,7 @@ header a ~ p {
 
 .btn p {
 	margin: 8px 0 0 0;
-	padding: 0;
+  padding: 0;
 }
 
 .btn > img {
@@ -88,7 +132,7 @@ img {
 	display: block;
 }
 
-.clementine-text { /* Styling for the Clementine.js text */
+.title-text {
 	padding: 0;
 	margin: -25px 0 0 0;
 	font-weight: 500;
@@ -99,7 +143,7 @@ img {
 /****** Click Styling ******/
 
 .btn-container {	/* Styling for the div that contains the buttons */
-	margin: -10px auto 0 auto;
+	margin: 0 auto 0 auto;
 	text-align: center;
 }
 
@@ -120,15 +164,23 @@ img {
 	outline: none;
 }
 
+.btn:hover {
+	background-color: #37E2F9;
+}
+
 .btn:active {	/* Scale the button down by 10% when clicking on button */
 	transform: scale(0.9, 0.9);
 	-webkit-transform: scale(0.9, 0.9);
 	-moz-transform: scale(0.9, 0.9);
 }
 
-.btn-delete {	/* Styling for delete button */
+.btn-reset {	/* Styling for reset button */
 	background-color: #ECEFF1;
 	color: #212121;
+}
+
+.btn-reset:hover {
+	background-color: #FFEBEB;
 }
 
 #click-nbr {
@@ -137,25 +189,30 @@ img {
 
 /****** Profile Styling ******/
 
-.github-profile {
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 	width: 350px;
 	height: 200px;
-	border-radius: 3px;
-	margin: 86px auto 0 auto;
+  margin: 32px auto;
+  padding: 16px;
 	background-color: #EEE;
+	border-radius: 3px;
 	text-align: center;
 	color: #000;
 }
 
-.github-profile p:first-child {
-	padding-top: 16px;
+.user-profile .title {
+  text-align: center;
+  font-weight: bold;
 }
 
-.github-profile p:nth-child(5) {
+.user-profile p:nth-child(5) {
 	margin-bottom: 16px
 }
 
-.github-profile p {
+.user-profile p {
 	margin: 0 0 0 16px;
 	text-align: left;
 }
@@ -185,4 +242,15 @@ span {
 	color: #FFFFFF;
 	display: inline;
 	margin: 0;
+}
+
+/****** Footer Styling ******/
+
+footer {
+  margin-top: 16px;
+  text-align: center;
+}
+
+footer a {
+  color: #727272;
 }
