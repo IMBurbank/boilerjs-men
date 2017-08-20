@@ -25,35 +25,36 @@ module.exports = passport => {
     clientSecret: configAuth.githubAuth.clientSecret,
     callbackURL: configAuth.githubAuth.callbackURL
 
-  }, (accessToken, refreshToken, profile, done) => {
-    process.nextTick(() => {
-      User.findOne({
-        'github.id': profile.id
-      }, (err, user) => {
-        if (err) return done(err);
+  }, async (accessToken, refreshToken, profile, done) => {
+    try {
+      const user = await User.findOne({ 'github.id': profile.id });
 
-        if (user) return done(null, user);
-        else {
-          const newUser = new User();
+      if (user)
+        return done(null, user);
 
-          newUser.loginAuth = 'github';
+      
+      const newUser = new User();
 
-          newUser.github.id = profile.id;
-          newUser.github.username = profile.username;
-          newUser.github.displayName = profile.displayName;
-          newUser.github.publicRepos = profile._json.public_repos;
+      newUser.loginAuth = 'github';
 
-          newUser.nbrClicks.clicks = 0;
+      newUser.github.id = profile.id;
+      newUser.github.username = profile.username;
+      newUser.github.displayName = profile.displayName;
+      newUser.github.publicRepos = profile._json.public_repos;
 
-          newUser.save(err => {
-            if (err) throw err;
+      newUser.nbrClicks.clicks = 0;
 
-            return done(null, newUser);
-          });
+      newUser.save( err => {
+        if (err) 
+          return done(err);
 
-        }
+        return done(null, newUser);
       });
-    });
+      
+    } catch(err) {
+
+      return done(err);
+    }  
   }));
 
   passport.use('google', new GoogleStrategy({
@@ -62,33 +63,34 @@ module.exports = passport => {
     clientSecret: configAuth.googleAuth.clientSecret,
     callbackURL: configAuth.googleAuth.callbackURL
 
-  }, (accessToken, refreshToken, profile, done) => {
-    process.nextTick(() => {
-      User.findOne({
-        'google.id': profile.id
-      }, function (err, user) {
-        if (err) return done(err);
+  }, async (accessToken, refreshToken, profile, done) => {
+    try {
+      const user = await User.findOne({ 'google.id': profile.id });
 
-        if (user) return done(null, user);
-        else {
-          const newUser = new User();
+      if (user) 
+        return done(null, user);
 
-          newUser.loginAuth = 'google';
 
-          newUser.google.id = profile.id;
-          newUser.google.displayName = profile.displayName;
+      const newUser = new User();
+  
+      newUser.loginAuth = 'google';
 
-          newUser.nbrClicks.clicks = 0;
+      newUser.google.id = profile.id;
+      newUser.google.displayName = profile.displayName;
 
-          newUser.save(err => {
-            if (err) throw err;
+      newUser.nbrClicks.clicks = 0;
 
-            return done(null, newUser);
-          });
+      newUser.save( err => {
+        if (err) 
+          return done(err);
 
-        }
+        return done(null, newUser);
       });
-    });
+      
+    } catch (err) {
+
+      return done(err);
+    }
   }));
 
   passport.use('local-login', new LocalStrategy({
@@ -97,23 +99,22 @@ module.exports = passport => {
     passwordField: 'password',
     passReqToCallback: true,
 
-  }, (req, email, password, done) => {
-    process.nextTick(() => {
-      User.findOne({
-        'local.email': email.toLowerCase()
-      }, (err, user) => {
-        if (err)
-          return done(err);
+  }, async (req, email, password, done) => {
+    try {
+      const user = await User.findOne({ 'local.email': email.toLowerCase() });
+      
+      if (!user)
+        return done(null, false, req.flash('loginMessage', 'EMAIL/Password combination not found.'));
 
-        if (!user)
-          return done(null, false, req.flash('loginMessage', 'EMAIL/Password combination not found.'));
+      if (!user.validPassword(password))
+        return done(null, false, req.flash('loginMessage', 'Email/PASSWORD combination not found.'));
 
-        if (!user.validPassword(password))
-          return done(null, false, req.flash('loginMessage', 'Email/PASSWORD combination not found.'));
+      return done(null, user);
 
-        return done(null, user);
-      });
-    });
+    } catch(err) {
+
+      return done(err);
+    }
   }));
 
   passport.use('local-signup', new LocalStrategy({
@@ -122,57 +123,46 @@ module.exports = passport => {
     passwordField: 'password',
     passReqToCallback: true,
 
-  }, (req, email, password, done) => {
-    process.nextTick(() => {
-      email = email.toLowerCase();
+  }, async (req, email, password, done) => {
+    email = email.toLowerCase();
 
-      User.findOne({
-        'local.email': email
-      }, (err, user) => {
-        if (err)
+    try {
+      const emailOwner = await User.findOne({ 'local.email': email }),
+            nameOwner = await User.findOne({ 'local.displayNameLower': req.body.name.toLowerCase() });
+
+      if (emailOwner)
+        return done(null, false, req.flash('signupMessage', 'Email is already taken.'));
+
+      if (nameOwner)
+        return done(null, false, req.flash('signupMessage', 'Display Name is already taken.'));
+      
+      if (password !== req.body['re-password'])
+        return done(null, false, req.flash('signupMessage', 'Passwords do not match.'));
+
+
+      const newUser = new User();
+      
+      newUser.loginAuth = 'local'
+
+      newUser.local.email = email
+      newUser.local.password = newUser.generateHash(password);
+      newUser.local.displayName = req.body.name;
+      newUser.local.displayNameLower = req.body.name.toLowerCase();
+      newUser.local.id = '' + new Date().getTime() + email.charCodeAt(0);
+
+      newUser.nbrClicks.clicks = 0;
+
+      newUser.save (err => {
+        if (err) 
           return done(err);
 
-        if (user) {
-          return done(null, false, req.flash('signupMessage', 'Email is already taken.'));
-        } else {
-
-          User.findOne({
-            'local.displayNameLower': req.body.name.toLowerCase()
-          }, (err, user) => {
-            if (err)
-              return done(err);
-
-            if (user) {
-              return done(null, false, req.flash('signupMessage', 'Display Name is already taken.'));
-            } else if (password !== req.body['re-password']) {
-              return done(null, false, req.flash('signupMessage', 'Passwords do not match.'));
-            } else {
-
-              const newUser = new User();
-
-              newUser.loginAuth = 'local'
-
-              newUser.local.email = email
-              newUser.local.password = newUser.generateHash(password);
-              newUser.local.displayName = req.body.name;
-              newUser.local.displayNameLower = req.body.name.toLowerCase();
-              newUser.local.id = '' + new Date().getTime() + email.charCodeAt(0);
-
-              newUser.nbrClicks.clicks = 0;
-
-              newUser.save(err => {
-                if (err) throw err;
-
-                console.log('newUser: ', newUser);
-                return done(null, newUser);
-              });
-            }
-
-          });
-        }
-
+        return done(null, newUser);
       });
-    });
+
+    } catch(err) {
+
+      return done(err);
+    }
   }));
 
 };
