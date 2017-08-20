@@ -21,9 +21,9 @@ block main
         if user.loginAuth === 'github'
           img(src='/public/img/gh-mark-32px.png', alt='github logo')
         else if user.loginAuth === 'google'
-          img(src='/public/img/google_logo_32px.png', alt='github logo')
+          img(src='/public/img/google_logo_32px.png', alt='google logo')
         else
-          img(src='/public/img/egg2_32px.png', alt='github logo')
+          img(src='/public/img/egg2_32px.png', alt='egg logo')
         .user-details
           p
             span ID: 
@@ -32,7 +32,7 @@ block main
             span Display Name: 
             span#display-name.profile-value
         .nav-menu
-          a.menu(href='/') Home
+          a.menu(href='/content') Content
           p#menu-divide |
           a.menu(href='/logout') Sign Out
 

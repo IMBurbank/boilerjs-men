@@ -225,21 +225,21 @@ span {
 	font-weight: 500;
 }
 
-.github-profile > img {
+.user-profile > img {
 	padding-top: 16px;
 	margin-bottom: 16px;
 }
 
-.github-profile .menu:hover {
+.user-profile .menu:hover {
 	color: #FFA000;
 }
 
-.github-profile .menu:active {
+.user-profile .menu:active {
 	color: #FF630D;
 }
 
 #menu-divide {
-	color: #FFFFFF;
+	color: #727272;
 	display: inline;
 	margin: 0;
 }
